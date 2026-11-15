@@ -3,6 +3,8 @@
 {% set active = null %}
 {% set activeHandle = null %}
 {% set fieldValue = fieldValue ?? null %}
+{% set showLabel = showLabel ?? false %}
+{% set hasDefaultOption = hasDefaultOption ?? false %}
 
 {% if fieldValue|length %}
     {% if fieldValue.handle is defined and fieldValue.handle %}
@@ -23,8 +25,9 @@
 {% elseif active is not empty %}
     {# Fallback to label matching for backward compatibility #}
     {% set isActive = (option.label == active) %}
-{% elseif isDefault and active is null and activeHandle is null %}
-    {# No selection yet, use default #}
+{% elseif isDefault and active is null and activeHandle is null and not hasDefaultOption %}
+    {# No selection yet, use default - unless the field has its own "Default"
+       choice, which is what an empty value means then #}
     {% set isActive = true %}
 {% endif %}
 
@@ -35,37 +38,43 @@
         color: colours,
         handle: optionHandle,
     } %}
-    <button type="button" title="{{ option.label }}" data-value="{{ value | json_encode }}" class="option {% if isActive %} button-active{% endif %}" style="
-    {%- switch colours|length %}
-        {% case 1 %}
-            --color: {{ value.color[0].color is defined ? value.color[0].color : value.color[0].colour |parseRefs|raw }};
-        {% default %}
-            {% set percentage = 100 / colours|length %}
-            --color: linear-gradient(to bottom right, {% for color in colours %}{{ color.color is defined ? color.color : color.colour |parseRefs|raw }} {{ percentage * loop.index0 }}%, {{ color.color is defined ? color.color : color.colour |parseRefs|raw }} {{ percentage * loop.index }}%{% if not loop.last %},{% endif %}{% endfor %});
-    {% endswitch -%}
-        ">
-        {# <span>&hellip;</span> #}
-    </button>
+    {% set swatchStyle -%}
+        {%- switch colours|length %}
+            {% case 1 %}
+                --color: {{ value.color[0].color is defined ? value.color[0].color : value.color[0].colour |parseRefs|raw }};
+            {% default %}
+                {% set percentage = 100 / colours|length %}
+                --color: linear-gradient(to bottom right, {% for color in colours %}{{ color.color is defined ? color.color : color.colour |parseRefs|raw }} {{ percentage * loop.index0 }}%, {{ color.color is defined ? color.color : color.colour |parseRefs|raw }} {{ percentage * loop.index }}%{% if not loop.last %},{% endif %}{% endfor %});
+        {% endswitch -%}
+    {%- endset %}
 {% else %}
     {# option.color is a string #}
     {% set value = {
         label: option.label,
         color: colours,
+        handle: optionHandle,
     } %}
     {% if ';' in value.color %}
         {% set colours = value.color | split(';') %}
     {% else %}
         {% set colours = value.color | split(',') %}
     {% endif %}
-    <button type="button" title="{{ option.label }}" data-value="{{ value | json_encode }}" class="option {% if isActive %} button-active{% endif %}" style="
-    {% switch colours | length %}
-    {% case 1 %}
-        --color: {{ value.color|parseRefs|raw }};
-    {% default %}
-    {% set percentage = 100 / colours | length %}
-        --color: linear-gradient(to bottom right, {% for colour in colours %}{{ colour|parseRefs|raw }} {{ percentage * loop.index0 }}%, {{ colour|parseRefs|raw }} {{ percentage * loop.index }}%{% if not loop.last %},{% endif %}{% endfor %});
-    {% endswitch %}
-        ">
-        {#        <span>{{ option.label }}</span>#}
-    </button>
+    {% set swatchStyle -%}
+        {%- switch colours | length %}
+            {% case 1 %}
+                --color: {{ value.color|parseRefs|raw }};
+            {% default %}
+                {% set percentage = 100 / colours | length %}
+                --color: linear-gradient(to bottom right, {% for colour in colours %}{{ colour|parseRefs|raw }} {{ percentage * loop.index0 }}%, {{ colour|parseRefs|raw }} {{ percentage * loop.index }}%{% if not loop.last %},{% endif %}{% endfor %});
+        {% endswitch -%}
+    {%- endset %}
 {% endif %}
+
+<button type="button"
+        class="option{{ isActive ? ' button-active' }}"
+        data-value="{{ value|json_encode }}"
+        aria-pressed="{{ isActive ? 'true' : 'false' }}"
+        {% if not showLabel %}aria-label="{{ option.label }}" title="{{ option.label }}"{% endif %}>
+    <span class="color-swatches__chip" style="{{ swatchStyle|trim }}" aria-hidden="true"></span>
+    {% if showLabel %}<span class="color-swatches__label">{{ option.label }}</span>{% endif %}
+</button>

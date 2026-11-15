@@ -56,7 +56,7 @@ class ColourSwatches extends Model
             if (!empty($colorData['label'])) {
                 $this->handle = $colorData['handle'] ?? null;
                 $this->label = $colorData['label'];
-                $this->color = $colorData['color'];
+                $this->color = $colorData['color'] ?? null;
                 $this->default = filter_var($colorData['default'] ?? false, FILTER_VALIDATE_BOOLEAN);
                 $this->class = $colorData['class'] ?? '';
             }

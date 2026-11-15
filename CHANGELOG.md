@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## 5.3.0 - 2026-11-15
+Axmith & Robin fork of [craftpulse/craft-colour-swatches](https://github.com/craftpulse/craft-colour-swatches), published as `axmith-robin/craft-colour-swatches`.
+
+### Added
+- "Show labels" field setting (on by default): each colour's label shows under its swatch, not only as a tooltip, so similar colours can be told apart.
+- "Show a “Default” choice" field setting, with an optional label: a choice ahead of the colours that saves no value, so templates can apply their own default. For one field shared by places that need different defaults.
+
+### Changed
+- Swatch buttons expose their state with `aria-pressed`, sit in a labelled `role="group"`, and show a visible focus ring for keyboard users.
+- Options built from field-settings colours (not the config file) now carry a `handle` too.
+
 ## 5.1.0 - 2024-10-28
 ### Added
 - Added a `collection` function to the field that will return a recursive laravel collection for easier use in twig templates and to do manipulations.

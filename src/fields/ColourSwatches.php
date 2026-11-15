@@ -69,6 +69,33 @@ class ColourSwatches extends Field implements PreviewableFieldInterface, Sortabl
     /** @var int|string|null */
     public string|int|null $default = null;
 
+    /**
+     * Show each swatch's label under it, not just as a tooltip. Swatches
+     * that differ only slightly in colour are hard to tell apart without it.
+     *
+     * @var bool
+     * @since 5.3.0
+     */
+    public bool $showLabels = true;
+
+    /**
+     * Show a "Default" choice ahead of the colours. Picking it saves no
+     * value, so templates can fall back to their own default - useful
+     * when one field is shared by places that need different defaults.
+     *
+     * @var bool
+     * @since 5.3.0
+     */
+    public bool $showDefaultOption = false;
+
+    /**
+     * Label for the "Default" choice.
+     *
+     * @var string|null
+     * @since 5.3.0
+     */
+    public ?string $defaultOptionLabel = null;
+
     // Static Methods
     // =========================================================================
 
@@ -374,7 +401,7 @@ class ColourSwatches extends Field implements PreviewableFieldInterface, Sortabl
             ->namespaceInputId($id);
 
         Craft::$app->getView()
-            ->registerJs("new ColourSelectInput('{$namespacedId}');");
+            ->registerJs('new ColourSelectInput(' . Json::encode($namespacedId) . ');');
 
         // Render the input template
         return Craft::$app->getView()
