@@ -1,8 +1,8 @@
 {
-    "name": "craftpulse/craft-colour-swatches",
+    "name": "axmith-robin/craft-colour-swatches",
     "description": "Let clients choose from a predefined set of colours and utilise associated colour codes and class names in your templates.",
     "type": "craft-plugin",
-    "version": "5.2.0",
+    "version": "5.3.0",
     "keywords": [
         "craft",
         "cms",
@@ -15,9 +15,8 @@
         "swatches"
     ],
     "support": {
-        "email": "support@percipio.london",
-        "docs": "https://github.com/percipioglobal/craft-colour-swatches/blob/v4/README.md",
-        "issues": "https://github.com/percipioglobal/craft-colour-swatches/issues"
+        "issues": "https://github.com/Axmith-Robin/craft-colour-swatches/issues",
+        "source": "https://github.com/Axmith-Robin/craft-colour-swatches"
     },
     "license": "MIT",
     "authors": [

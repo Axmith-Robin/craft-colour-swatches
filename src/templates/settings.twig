@@ -16,6 +16,31 @@
     on: field.setRandom,
 }) }}
 
+{{ forms.lightswitchField({
+    label: 'Show labels'|t('colour-swatches'),
+    instructions: 'Show each colour’s label under its swatch, not only as a tooltip.'|t('colour-swatches'),
+    name: 'showLabels',
+    on: field.showLabels,
+}) }}
+
+{{ forms.lightswitchField({
+    label: 'Show a “Default” choice'|t('colour-swatches'),
+    instructions: 'Adds a choice ahead of the colours that saves no value, so the template applies its own default. Useful when one field is shared by places that need different defaults.'|t('colour-swatches'),
+    name: 'showDefaultOption',
+    on: field.showDefaultOption,
+    toggle: 'default-option-label',
+}) }}
+
+<div id="default-option-label" class="{{ field.showDefaultOption ? '' : 'hidden' }}">
+    {{ forms.textField({
+        label: '“Default” choice label'|t('colour-swatches'),
+        instructions: 'Leave blank for “Default”.'|t('colour-swatches'),
+        name: 'defaultOptionLabel',
+        value: field.defaultOptionLabel,
+        placeholder: 'Default'|t('colour-swatches'),
+    }) }}
+</div>
+
 <div id="settings" class="color-swatches-options {{ field.useConfigFile ? 'hidden' : '' }}">
     {{ forms.editableTable(config) }}
 </div>

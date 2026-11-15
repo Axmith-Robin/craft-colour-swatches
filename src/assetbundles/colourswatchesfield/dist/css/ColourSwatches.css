@@ -15,48 +15,41 @@
 }
 
 .color-swatches {
-    font-size: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding-top: .5rem;
 }
 
+/* Each option is a button holding a round chip (and, optionally, a label) */
 .color-swatches button {
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    font: inherit;
+    color: inherit;
+}
+
+.color-swatches__chip {
+    position: relative;
+    display: block;
+    width: 40px;
+    height: 40px;
     border: 3px solid #E7E8EB;
     border-radius: 50%;
-    cursor: pointer;
-    display: inline-block;
-    height: 40px;
-    width: 40px;
-    position: relative;
+    box-sizing: border-box;
     transition: box-shadow 200ms ease 0s;
-    margin: .5rem 10px 0 0;
 }
 
-.color-swatches button:hover span{
-    overflow: visible;
-    z-index: 999;
-    width: auto;
-}
-
-.color-swatches button span{
-    position: absolute;
-    left: 0;
-    left: 50%;
-    top: 120%;
-    transform: translate(-50%, 0);
-    font-size: 10px;
-    width: 48px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: #596773;
-    background: white;
-}
-
-.color-swatches.no-pointer button {
-    cursor: not-allowed;
-}
-
-.color-swatches button::after,
-.color-swatches button::before {
+.color-swatches__chip::after,
+.color-swatches__chip::before {
     border-radius: 50%;
     bottom: 0;
     content: '';
@@ -66,23 +59,65 @@
     top: 0;
 }
 
-.color-swatches button::after {
+.color-swatches__chip::after {
     background: var(--color);
 }
 
-.color-swatches button::before {
+/* Checkerboard behind the colour, so transparent / near-white swatches read */
+.color-swatches__chip::before {
     background-image: linear-gradient(45deg, #ccc 25%, transparent 25%, transparent 75%, #ccc 75%, #ccc), linear-gradient(45deg, #ccc 25%, transparent 25%, transparent 75%, #ccc 75%, #ccc);
     background-position: 0 0, 6px 6px;
     background-size: 12px 12px;
 }
 
+/* "Default" choice: a dashed, empty chip */
+.option--default .color-swatches__chip {
+    border-style: dashed;
+    border-color: #9AA5B1;
+    background: #fff;
+}
+
+.option--default .color-swatches__chip::before,
+.option--default .color-swatches__chip::after {
+    content: none;
+}
+
+.color-swatches__label {
+    max-width: 72px;
+    font-size: 11px;
+    line-height: 1.2;
+    text-align: center;
+    color: #596773;
+}
+
+.color-swatches--labelled button {
+    min-width: 56px;
+}
+
+.color-swatches.no-pointer button {
+    cursor: not-allowed;
+}
+
+.color-swatches .button-active .color-swatches__chip {
+    box-shadow: 0 0 0 3px #F2842D;
+}
+
+.color-swatches .button-active .color-swatches__label {
+    color: #1F2933;
+    font-weight: 600;
+}
+
+/* Keyboard focus: visible ring on the chip (the button itself has none) */
 .color-swatches button:focus {
     outline: none;
 }
 
-.color-swatches .button-active,
-.color-swatches .button-active:focus {
-    box-shadow: 0 0 0 3px #F2842D;
+.color-swatches button:focus-visible .color-swatches__chip {
+    box-shadow: 0 0 0 3px #fff, 0 0 0 5px #0B69A3;
+}
+
+.color-swatches button.button-active:focus-visible .color-swatches__chip {
+    box-shadow: 0 0 0 3px #F2842D, 0 0 0 5px #0B69A3;
 }
 
 .color-swatches pre {
